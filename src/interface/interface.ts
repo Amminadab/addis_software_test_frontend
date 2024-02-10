@@ -12,8 +12,22 @@ export interface Music {
 }
 
 export interface Filter {
-  genre: string;
+  genre: string | "";
   album: string;
   title: string;
   artist: string;
+  _id?: any;
+}
+
+export interface FormValues {
+  title: string;
+  artist: string;
+  album: string;
+  genre: string;
+  index?: string;
+  _id?: string;
+}
+export interface state {
+  song: FormValues;
+  songs: FormValues[];
 }

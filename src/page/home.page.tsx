@@ -14,17 +14,13 @@ import {
   MusicImage,
   OptionStyles,
   Paragraph,
-  Section,
   SelectStyles,
   StyledImage,
-  ToggleButton,
-  ToggleContainer,
-  Wrapper,
   WrapperSection,
 } from "../emotion/home.style";
+import { Section, Wrapper } from "../emotion/global.style";
 
 const Home = () => {
-  const [activeButton, setActiveButton] = useState<number>(1);
   const [error, setError] = useState("");
   const [songs, setSongs] = useState<Music[]>([]);
   const [filter, setFilter] = useState<Filter>({
@@ -43,10 +39,6 @@ const Home = () => {
       ...prevFilter,
       [name]: value,
     }));
-  };
-
-  const handleButtonClick = (buttonNumber: number) => {
-    setActiveButton(buttonNumber);
   };
 
   useEffect(() => {
@@ -88,7 +80,6 @@ const Home = () => {
           throw new Error("Failed to fetch songs");
         }
         const data = await response.json();
-        // console.log(data);
         if (data?.data?.song?.length === 0) {
           setError("noData");
         } else {
@@ -104,22 +95,6 @@ const Home = () => {
   return (
     <>
       <Wrapper>
-        <Section>
-          <ToggleContainer>
-            <ToggleButton
-              isActive={activeButton === 1}
-              onClick={() => handleButtonClick(1)}
-            >
-              Home
-            </ToggleButton>
-            <ToggleButton
-              isActive={activeButton === 2}
-              onClick={() => handleButtonClick(2)}
-            >
-              Manage
-            </ToggleButton>
-          </ToggleContainer>
-        </Section>
         <Section>
           <StyledImage src={bg} alt="background image" />
           <WrapperSection>

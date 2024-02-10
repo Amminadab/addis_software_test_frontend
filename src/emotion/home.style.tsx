@@ -1,4 +1,4 @@
-import { ToggleButtonProps, InputProps, Music } from "../interface/interface";
+import { ToggleButtonProps, InputProps } from "../interface/interface";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
@@ -16,7 +16,6 @@ export const ToggleButton = styled.button<ToggleButtonProps>`
   background-color: #155681;
   color: rgb(64, 224, 208);
   cursor: pointer;
-
   &:last-child {
     margin-right: 0;
   }
@@ -50,19 +49,6 @@ export const Button = styled.button`
   }
 `;
 
-export const Section = styled.div`
-  margin: 0 4rem;
-  position: relative;
-  ${() => css`
-    @media (max-width: 960px) {
-      margin: 0 2rem;
-    }
-    @media (max-width: 540px) {
-      margin: 0 1.2rem;
-    }
-  `}
-`;
-
 export const WrapperSection = styled.div`
   padding: 2rem 4rem;
   position: relative;
@@ -84,11 +70,6 @@ export const StyledImage = styled.img`
   border-radius: 1rem;
   border: none;
   z-index: -100;
-`;
-
-export const Wrapper = styled.div`
-  max-width: 1300px;
-  margin: 3rem auto;
 `;
 
 export const Paragraph = styled.p`
