@@ -7,3 +7,14 @@
 body {
   background-color: rgb(3, 55, 75);
 }
+@media (max-width: 540px) {
+  .disable {
+    display: none;
+  }
+}
+
+.mra {
+  /* margin-left: auto; */
+  width: 100%;
+  margin-bottom: 20px;
+}
