@@ -31,3 +31,27 @@ export interface state {
   song: FormValues;
   songs: FormValues[];
 }
+
+export interface GenreStat {
+  _id: string;
+  totalSongs: number;
+}
+
+export interface StatType {
+  totalSongs: number;
+  totalArtists: number;
+  totalAlbums: number;
+  totalGenres: number;
+}
+
+export interface ArtistStat {
+  artists: individual[];
+  album: string;
+  totalSongs: number;
+  _id?: string;
+}
+
+export interface individual {
+  album: string;
+  totalSongs: number;
+}

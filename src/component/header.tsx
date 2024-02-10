@@ -25,6 +25,12 @@ const Header = () => {
         >
           Manage
         </ToggleButton>
+        <ToggleButton
+          isActive={location.pathname === "/stat"}
+          onClick={() => handleButtonClick("stat")}
+        >
+          Stat
+        </ToggleButton>
       </ToggleContainer>
     </Section>
   );

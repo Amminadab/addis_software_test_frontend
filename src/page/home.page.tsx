@@ -1,10 +1,8 @@
-import bg from "../assets/bg_music.jpg";
+import bg from "../assets/bg_music.webp";
 import MusicIcon from "../assets/music.svg";
 import { useEffect, useState, ChangeEvent } from "react";
 
-const apiUrl = import.meta.env.VITE_APP_API_URL;
-
-import { Music, Filter } from "../interface/interface";
+import { Filter, state } from "../interface/interface";
 import {
   Button,
   Flex,
@@ -19,17 +17,25 @@ import {
   WrapperSection,
 } from "../emotion/home.style";
 import { Section, Wrapper } from "../emotion/global.style";
+import { useDispatch, useSelector } from "react-redux";
+import { GET_SONGS } from "../redux/sagas/types";
 
-const Home = () => {
-  const [error, setError] = useState("");
-  const [songs, setSongs] = useState<Music[]>([]);
+const Home: React.FC = () => {
+  const dispatch = useDispatch();
   const [filter, setFilter] = useState<Filter>({
     genre: "jazz",
     album: "",
     title: "",
     artist: "",
   });
-  // console.log(filter);
+  const [filteredSongs, setFilteredSongs] = useState<Filter[]>([]);
+
+  const songs = useSelector((state: state) => state.songs);
+
+  useEffect(() => {
+    dispatch({ type: GET_SONGS });
+    setFilteredSongs(songs);
+  }, [songs.length]);
 
   const handleInputChange = (
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -41,55 +47,17 @@ const Home = () => {
     }));
   };
 
-  useEffect(() => {
-    const fetchSongs = async () => {
-      try {
-        const response = await fetch(`${apiUrl}/songs/`, {
-          method: "GET",
-        });
-        if (!response.ok) {
-          throw new Error("Failed to fetch FAQs");
-        }
-        const data = await response.json();
-        // console.log(data, "no");
-        if (data?.data?.songs?.length === 0) {
-          setError("noData");
-        } else {
-          setSongs(data?.data?.songs);
-        }
-      } catch (error) {
-        setError("externalError");
-      }
-    };
-
-    fetchSongs();
-  }, []);
-
   const handleSearch = () => {
-    const fetchSongs = async () => {
-      try {
-        const url = `${apiUrl}/songs/filter?genre=${filter.genre}${
-          filter.album && `&album=${filter.album}`
-        }${filter.title && `&title=${filter.title}`}${
-          filter.artist && `&artist=${filter.artist}`
-        }`;
-        const response = await fetch(url, {
-          method: "GET",
-        });
-        if (!response.ok) {
-          throw new Error("Failed to fetch songs");
-        }
-        const data = await response.json();
-        if (data?.data?.song?.length === 0) {
-          setError("noData");
-        } else {
-          setSongs(data?.data?.song);
-        }
-      } catch (error) {
-        setError("externalError");
-      }
-    };
-    fetchSongs();
+    const filtered = songs.filter((music) => {
+      const { title, artist, album, genre } = filter;
+      return (
+        music.title.toLowerCase().includes(title.toLowerCase()) &&
+        music.artist.toLowerCase().includes(artist.toLowerCase()) &&
+        music.album.toLowerCase().includes(album.toLowerCase()) &&
+        music.genre.toLowerCase().includes(genre.toLowerCase())
+      );
+    });
+    setFilteredSongs(filtered);
   };
 
   return (
@@ -133,9 +101,8 @@ const Home = () => {
                 onChange={handleInputChange}
               >
                 <OptionStyles value="jazz">jazz</OptionStyles>
-                <OptionStyles value="dave">Dave</OptionStyles>
-                <OptionStyles value="pumpernickel">Pumpernickel</OptionStyles>
-                <OptionStyles value="reeses">Reeses</OptionStyles>
+                <OptionStyles value="pop">Pop</OptionStyles>
+                <OptionStyles value="rock">Rock</OptionStyles>
               </SelectStyles>
               <Button onClick={handleSearch}>Search</Button>
             </Flex>
@@ -143,8 +110,8 @@ const Home = () => {
         </Section>
         <Section>
           <GridContainer>
-            {songs.length > 0 &&
-              songs.map((music, index) => (
+            {filteredSongs.length > 0 &&
+              filteredSongs.map((music, index) => (
                 <MusicCard key={index}>
                   <h3>{music.title}</h3>
                   <p>Artist: {music.artist}</p>

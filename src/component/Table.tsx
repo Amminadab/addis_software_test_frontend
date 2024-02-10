@@ -18,7 +18,7 @@ import { DELETE_SONG_BY_ID, GET_SONGS } from "../redux/sagas/types";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#0c2041",
+    backgroundColor: "#05525f",
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {

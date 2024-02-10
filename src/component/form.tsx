@@ -57,7 +57,7 @@ const Form: React.FC<FormProps> = ({ open, handleClickOpen, handleClose }) => {
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    song.index === "0"
+    song.index == "0"
       ? dispatch({
           type: CREATE_SONG,
           song: { ...song, index: `${nanoid(8)}` },
@@ -65,7 +65,13 @@ const Form: React.FC<FormProps> = ({ open, handleClickOpen, handleClose }) => {
       : dispatch({ type: UPDATE_SONG_BY_ID, song });
 
     dispatch(
-      setSongSlice({ title: "", artist: "", album: "", genre: "", index: 0 })
+      setSongSlice({
+        title: "",
+        artist: "",
+        album: "",
+        genre: "jazz",
+        index: 0,
+      })
     );
   };
 
@@ -81,7 +87,7 @@ const Form: React.FC<FormProps> = ({ open, handleClickOpen, handleClose }) => {
               title: "",
               artist: "",
               album: "",
-              genre: "",
+              genre: "jazz",
               index: 0,
             })
           );
