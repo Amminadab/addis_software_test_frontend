@@ -5,11 +5,12 @@ import {
   getSongsAPI,
   updateSongAPI,
 } from "../../../apis";
-// import { Filter } from "../../../interface/interface";
+
 import {
   addSongSlice,
   deleteSongSlice,
   editSongSlice,
+  getSongsFetch,
   getSongsSlice,
 } from "../../slice/songs";
 import { put, takeEvery } from "redux-saga/effects";
@@ -22,11 +23,8 @@ import {
   UPDATE_SONG_BY_ID,
 } from "../types";
 
-// interface createAction {
-//   song: Filter;
-// }
-
 export function* getSongsSaga(): Generator<any> {
+  yield put(getSongsFetch());
   const songs = yield getSongsAPI();
   const songsData = songs as { data: any };
   yield put(getSongsSlice(songsData.data.data.songs));
@@ -34,7 +32,6 @@ export function* getSongsSaga(): Generator<any> {
 
 export function* getSongByIdSaga(action: any): Generator<any> {
   yield getSongByIdAPI(action.id);
-  // yield put(setSongSlice(song));
 }
 
 export function* createSongSaga(action: any): Generator<any> {

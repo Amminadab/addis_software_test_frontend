@@ -12,9 +12,9 @@ import edit from "../assets/edit.svg";
 import deleteIcon from "../assets/delete.svg";
 import { Img } from "../emotion/manage.style";
 import { setSongSlice } from "../redux/slice/song";
-// import { deleteSongSlice } from "../redux/slice/songs";
 import { useEffect } from "react";
 import { DELETE_SONG_BY_ID, GET_SONGS } from "../redux/sagas/types";
+import { SkeletonText } from "../emotion/home.style";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -46,10 +46,9 @@ const ManageTable: React.FC<FormProps> = ({ handleClickOpen }) => {
   useEffect(() => {
     dispatch({ type: GET_SONGS });
   }, []);
-  const rows = useSelector((state: state) => state.songs);
-  // console.log(rows);
+  const rows = useSelector((state: state) => state.songs.songs);
+  const isLoading = useSelector((state: state) => state.songs.isLoading);
 
-  //   console.log(rows);
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -63,35 +62,63 @@ const ManageTable: React.FC<FormProps> = ({ handleClickOpen }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.title}>
-              <StyledTableCell component="th" scope="row">
-                {row.title}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.artist}</StyledTableCell>
-              <StyledTableCell align="right">{row.album}</StyledTableCell>
-              <StyledTableCell align="right">{row.genre}</StyledTableCell>
-              <StyledTableCell align="right">
-                <div>
-                  <img
-                    onClick={() => {
-                      handleClickOpen();
-                      dispatch(setSongSlice(row));
-                    }}
-                    src={edit}
-                    alt="edit"
-                  />
-                  <Img
-                    src={deleteIcon}
-                    onClick={() => {
-                      dispatch({ type: DELETE_SONG_BY_ID, id: row.index });
-                    }}
-                    alt="delete"
-                  />
-                </div>
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
+          {isLoading &&
+            new Array(6).fill(
+              <StyledTableRow>
+                <StyledTableCell component="th" scope="row">
+                  <SkeletonText />
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  {" "}
+                  <SkeletonText />
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  {" "}
+                  <SkeletonText />
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  {" "}
+                  <SkeletonText />
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  {" "}
+                  <SkeletonText />
+                </StyledTableCell>
+              </StyledTableRow>
+            )}
+          {!isLoading && (
+            <>
+              {rows.map((row) => (
+                <StyledTableRow key={row.title}>
+                  <StyledTableCell component="th" scope="row">
+                    {row.title}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">{row.artist}</StyledTableCell>
+                  <StyledTableCell align="right">{row.album}</StyledTableCell>
+                  <StyledTableCell align="right">{row.genre}</StyledTableCell>
+                  <StyledTableCell align="right">
+                    <div>
+                      <img
+                        onClick={() => {
+                          handleClickOpen();
+                          dispatch(setSongSlice(row));
+                        }}
+                        src={edit}
+                        alt="edit"
+                      />
+                      <Img
+                        src={deleteIcon}
+                        onClick={() => {
+                          dispatch({ type: DELETE_SONG_BY_ID, id: row.index });
+                        }}
+                        alt="delete"
+                      />
+                    </div>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </>
+          )}
         </TableBody>
       </Table>
     </TableContainer>

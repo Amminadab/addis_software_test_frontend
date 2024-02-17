@@ -29,7 +29,12 @@ export interface FormValues {
 }
 export interface state {
   song: FormValues;
+  songs: songsState;
+}
+
+export interface songsState {
   songs: FormValues[];
+  isLoading: boolean;
 }
 
 export interface GenreStat {

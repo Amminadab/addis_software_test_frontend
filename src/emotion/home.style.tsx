@@ -1,5 +1,5 @@
 import { ToggleButtonProps, InputProps } from "../interface/interface";
-import { css } from "@emotion/react";
+import { css, keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
 
 export const ToggleContainer = styled.div`
@@ -198,4 +198,43 @@ export const MusicImage = styled.img`
   position: absolute;
   top: 2rem;
   right: 0;
+`;
+
+export const skeletonAnimation = keyframes`
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: 200px 0;
+  }
+`;
+
+// Loading skeleton styles
+export const Skeleton = styled.div`
+  width: 100%;
+  height: 8rem;
+  border-radius: 0.5rem;
+
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0)
+  );
+  background-size: 200px 100%;
+  animation: ${skeletonAnimation} 1.5s infinite linear;
+`;
+
+export const SkeletonText = styled.div`
+  width: 50%;
+  height: 1.21rem;
+  border-radius: 0.3rem;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.2),
+    rgba(0, 0, 0, 0)
+  );
+  background-size: 200px 100%;
+  animation: ${skeletonAnimation} 1.5s infinite linear;
 `;
