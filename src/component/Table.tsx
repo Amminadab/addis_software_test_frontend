@@ -12,11 +12,10 @@ import edit from "../assets/edit.svg";
 import deleteIcon from "../assets/delete.svg";
 import { Img } from "../emotion/manage.style";
 import { setSongSlice } from "../redux/slice/song";
-import { useEffect } from "react";
-import { DELETE_SONG_BY_ID, GET_SONGS } from "../redux/sagas/types";
+import { DELETE_SONG_BY_ID } from "../redux/sagas/types";
 import { SkeletonText } from "../emotion/home.style";
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+const StyledTableCell = styled(TableCell)(({ theme }: { theme: any }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#05525f",
     color: theme.palette.common.white,
@@ -43,9 +42,6 @@ interface FormProps {
 const ManageTable: React.FC<FormProps> = ({ handleClickOpen }) => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch({ type: GET_SONGS });
-  }, []);
   const rows = useSelector((state: state) => state.songs.songs);
   const isLoading = useSelector((state: state) => state.songs.isLoading);
 
@@ -63,29 +59,25 @@ const ManageTable: React.FC<FormProps> = ({ handleClickOpen }) => {
         </TableHead>
         <TableBody>
           {isLoading &&
-            new Array(6).fill(
-              <StyledTableRow>
+            new Array(6).fill(null).map((_, index) => (
+              <StyledTableRow key={index}>
                 <StyledTableCell component="th" scope="row">
                   <SkeletonText />
                 </StyledTableCell>
                 <StyledTableCell align="right">
-                  {" "}
                   <SkeletonText />
                 </StyledTableCell>
                 <StyledTableCell align="right">
-                  {" "}
                   <SkeletonText />
                 </StyledTableCell>
                 <StyledTableCell align="right">
-                  {" "}
                   <SkeletonText />
                 </StyledTableCell>
                 <StyledTableCell align="right">
-                  {" "}
                   <SkeletonText />
                 </StyledTableCell>
               </StyledTableRow>
-            )}
+            ))}
           {!isLoading && (
             <>
               {rows.map((row) => (
