@@ -110,7 +110,7 @@ export const InputStyles = styled.input<InputProps>`
   ${({ variant }) =>
     variant === "primary" &&
     css`
-      width: 6rem;
+      width: 16rem;
     `}
   @media (max-width: 380px) {
     max-width: 15rem;
