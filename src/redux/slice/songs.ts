@@ -1,40 +1,55 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+interface Song {
+  index?: string;
+  title?: string;
+  artist?: string;
+  album?: string;
+  genre?: string;
+  _id?: string;
+}
+
+interface SongsState {
+  songs: Song[];
+  isLoading: boolean;
+}
+
 const songs = createSlice({
   name: "songs",
-  initialState: [
-    {
-      index: "0",
-      title: "",
-      artist: "",
-      album: "",
-      genre: "",
-      _id: "",
-    },
-  ],
+  initialState: {
+    songs: [],
+    isLoading: false,
+  } as SongsState,
   reducers: {
-    getSongsSlice: (state, action) => {
-      state = action.payload;
-      return state;
+    getSongsFetch: (state) => {
+      state.isLoading = true;
     },
-    addSongSlice: (state, action: PayloadAction<any>) => {
-      state.push(action.payload);
-      return state;
+
+    getSongsSlice: (state, action: PayloadAction<any>) => {
+      state.songs = action.payload;
+      state.isLoading = false;
     },
-    editSongSlice: (state, action: PayloadAction<any>) => {
-      state = state.map((song) =>
+
+    addSongSlice: (state, action: PayloadAction<Song>) => {
+      state.songs.push(action.payload);
+    },
+    editSongSlice: (state, action: PayloadAction<Song>) => {
+      state.songs = state.songs.map((song) =>
         song.index === action.payload.index ? action.payload : song
       );
-      return state;
     },
-    deleteSongSlice: (state, action: PayloadAction<any>) => {
-      state = state.filter((song) => song.index !== action.payload);
-      return state;
+    deleteSongSlice: (state, action: PayloadAction<string>) => {
+      state.songs = state.songs.filter((song) => song.index !== action.payload);
     },
   },
 });
 
-export const { getSongsSlice, addSongSlice, editSongSlice, deleteSongSlice } =
-  songs.actions;
+export const {
+  getSongsSlice,
+  getSongsFetch,
+  addSongSlice,
+  editSongSlice,
+  deleteSongSlice,
+} = songs.actions;
 
 export default songs.reducer;

@@ -13,6 +13,7 @@ import {
   Paragraph,
   ParagraphSmall,
   SelectStyles,
+  Skeleton,
   StyledImage,
   WrapperSection,
 } from "../emotion/home.style";
@@ -30,7 +31,9 @@ const Home: React.FC = () => {
   });
   const [filteredSongs, setFilteredSongs] = useState<Filter[]>([]);
 
-  const songs = useSelector((state: state) => state.songs);
+  const songs = useSelector((state: state) => state.songs.songs);
+  const isLoading = useSelector((state: state) => state.songs.isLoading);
+  console.log(songs, isLoading);
 
   useEffect(() => {
     dispatch({ type: GET_SONGS });
@@ -48,6 +51,8 @@ const Home: React.FC = () => {
   };
 
   useEffect(() => {
+    if (songs) {
+    }
     const filtered = songs.filter((music) => {
       const { title, artist, album, genre } = filter;
       return (
@@ -94,18 +99,23 @@ const Home: React.FC = () => {
         </Section>
         <Section>
           <GridContainer>
-            {filteredSongs.length > 0 ? (
-              filteredSongs.map((music, index) => (
-                <MusicCard key={index}>
-                  <h3>{music.title}</h3>
-                  <p>Artist: {music.artist}</p>
-                  {music.album && <p>Album: {music.album}</p>}
-                  <p>Genre: {music.genre}</p>
-                  <MusicImage src={MusicIcon} />
-                </MusicCard>
-              ))
-            ) : (
-              <ParagraphSmall>No songs found.</ParagraphSmall>
+            {isLoading && new Array(6).fill(<Skeleton />)}
+            {!isLoading && (
+              <>
+                {filteredSongs.length > 0 ? (
+                  filteredSongs.map((music, index) => (
+                    <MusicCard key={index}>
+                      <h3>{music.title}</h3>
+                      <p>Artist: {music.artist}</p>
+                      {music.album && <p>Album: {music.album}</p>}
+                      <p>Genre: {music.genre}</p>
+                      <MusicImage src={MusicIcon} />
+                    </MusicCard>
+                  ))
+                ) : (
+                  <ParagraphSmall>No songs found.</ParagraphSmall>
+                )}
+              </>
             )}
           </GridContainer>
         </Section>
