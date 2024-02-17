@@ -4,7 +4,6 @@ import { useEffect, useState, ChangeEvent } from "react";
 
 import { Filter, state } from "../interface/interface";
 import {
-  Button,
   Flex,
   GridContainer,
   InputStyles,
@@ -12,6 +11,7 @@ import {
   MusicImage,
   OptionStyles,
   Paragraph,
+  ParagraphSmall,
   SelectStyles,
   StyledImage,
   WrapperSection,
@@ -23,10 +23,10 @@ import { GET_SONGS } from "../redux/sagas/types";
 const Home: React.FC = () => {
   const dispatch = useDispatch();
   const [filter, setFilter] = useState<Filter>({
-    genre: "jazz",
-    album: "",
+    genre: "",
     title: "",
     artist: "",
+    album: "",
   });
   const [filteredSongs, setFilteredSongs] = useState<Filter[]>([]);
 
@@ -47,7 +47,7 @@ const Home: React.FC = () => {
     }));
   };
 
-  const handleSearch = () => {
+  useEffect(() => {
     const filtered = songs.filter((music) => {
       const { title, artist, album, genre } = filter;
       return (
@@ -58,7 +58,7 @@ const Home: React.FC = () => {
       );
     });
     setFilteredSongs(filtered);
-  };
+  }, [filter, songs]);
 
   return (
     <>
@@ -74,24 +74,8 @@ const Home: React.FC = () => {
                 variant="primary"
                 type="text"
                 name="title"
-                placeholder="song"
+                placeholder="Search by song, artist, or album"
                 value={filter.title}
-                onChange={handleInputChange}
-              />
-              <InputStyles
-                variant="primary"
-                type="text"
-                name="artist"
-                placeholder="artist"
-                value={filter.artist}
-                onChange={handleInputChange}
-              />
-              <InputStyles
-                variant="primary"
-                type="text"
-                name="album"
-                placeholder="album"
-                value={filter.album}
                 onChange={handleInputChange}
               />
               <SelectStyles
@@ -100,17 +84,17 @@ const Home: React.FC = () => {
                 value={filter.genre}
                 onChange={handleInputChange}
               >
-                <OptionStyles value="jazz">jazz</OptionStyles>
+                <OptionStyles value="">All Genres</OptionStyles>
+                <OptionStyles value="jazz">Jazz</OptionStyles>
                 <OptionStyles value="pop">Pop</OptionStyles>
                 <OptionStyles value="rock">Rock</OptionStyles>
               </SelectStyles>
-              <Button onClick={handleSearch}>Search</Button>
             </Flex>
           </WrapperSection>
         </Section>
         <Section>
           <GridContainer>
-            {filteredSongs.length > 0 &&
+            {filteredSongs.length > 0 ? (
               filteredSongs.map((music, index) => (
                 <MusicCard key={index}>
                   <h3>{music.title}</h3>
@@ -119,7 +103,10 @@ const Home: React.FC = () => {
                   <p>Genre: {music.genre}</p>
                   <MusicImage src={MusicIcon} />
                 </MusicCard>
-              ))}
+              ))
+            ) : (
+              <ParagraphSmall>No songs found.</ParagraphSmall>
+            )}
           </GridContainer>
         </Section>
       </Wrapper>

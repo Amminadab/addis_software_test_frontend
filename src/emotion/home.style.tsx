@@ -89,6 +89,14 @@ export const Paragraph = styled.p`
   `}
 `;
 
+export const ParagraphSmall = styled.p`
+  color: white;
+  font-weight: 500;
+  font-size: 1.2rem;
+  margin-bottom: 10rem;
+  text-align: center;
+`;
+
 export const InputStyles = styled.input<InputProps>`
   padding: 12px;
   font-size: 16px;
