@@ -18,11 +18,9 @@ import {
   WrapperSection,
 } from "../emotion/home.style";
 import { Section, Wrapper } from "../emotion/global.style";
-import { useDispatch, useSelector } from "react-redux";
-import { GET_SONGS } from "../redux/sagas/types";
+import { useSelector } from "react-redux";
 
 const Home: React.FC = () => {
-  const dispatch = useDispatch();
   const [filter, setFilter] = useState<Filter>({
     genre: "",
     title: "",
@@ -35,7 +33,6 @@ const Home: React.FC = () => {
   const isLoading = useSelector((state: state) => state.songs.isLoading);
 
   useEffect(() => {
-    dispatch({ type: GET_SONGS });
     setFilteredSongs(songs);
   }, [songs.length]);
 

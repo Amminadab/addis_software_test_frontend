@@ -123,7 +123,7 @@ const Form: React.FC<FormProps> = ({ open, handleClickOpen, handleClose }) => {
               artist: "",
               album: "",
               genre: "jazz",
-              index: 0,
+              index: "0",
             })
           );
         }}
@@ -132,9 +132,11 @@ const Form: React.FC<FormProps> = ({ open, handleClickOpen, handleClose }) => {
         Add New Song
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add Song</DialogTitle>
+        <DialogTitle>Song</DialogTitle>
         <DialogContent>
-          <DialogContentText>You can add songs that you want</DialogContentText>
+          <DialogContentText>
+            You can add and edit songs that you want
+          </DialogContentText>
           <Grid>
             <TextField
               fullWidth
