@@ -33,7 +33,6 @@ const Home: React.FC = () => {
 
   const songs = useSelector((state: state) => state.songs.songs);
   const isLoading = useSelector((state: state) => state.songs.isLoading);
-  console.log(songs, isLoading);
 
   useEffect(() => {
     dispatch({ type: GET_SONGS });
