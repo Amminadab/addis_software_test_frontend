@@ -7,6 +7,7 @@ import {
   SelectChangeEvent,
   TextField,
 } from "@mui/material";
+
 import { Grid } from "../emotion/manage.style";
 import { ChangeEvent, useState } from "react";
 import { state } from "../interface/interface";
@@ -102,7 +103,7 @@ const Form: React.FC<FormProps> = ({ open, handleClickOpen, handleClose }) => {
     song.index == "0"
       ? dispatch({
           type: CREATE_SONG,
-          song: { ...song, index: `${nanoid(8)}` },
+          song: song,
         })
       : dispatch({ type: UPDATE_SONG_BY_ID, song });
 

@@ -35,11 +35,11 @@ const songs = createSlice({
     },
     editSongSlice: (state, action: PayloadAction<Song>) => {
       state.songs = state.songs.map((song) =>
-        song.index === action.payload.index ? action.payload : song
+        song._id === action.payload._id ? action.payload : song
       );
     },
     deleteSongSlice: (state, action: PayloadAction<string>) => {
-      state.songs = state.songs.filter((song) => song.index !== action.payload);
+      state.songs = state.songs.filter((song) => song._id !== action.payload);
     },
   },
 });
