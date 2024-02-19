@@ -13,7 +13,7 @@ import {
   getSongsFetch,
   getSongsSlice,
 } from "../../slice/songs";
-import { put, takeEvery } from "redux-saga/effects";
+import { call, put, takeEvery } from "redux-saga/effects";
 
 import {
   GET_SONGS,
@@ -22,12 +22,17 @@ import {
   GET_SONG_BY_ID,
   UPDATE_SONG_BY_ID,
 } from "../types";
+import toast from "react-hot-toast";
 
 export function* getSongsSaga(): Generator<any> {
-  yield put(getSongsFetch());
-  const songs = yield getSongsAPI();
-  const songsData = songs as { data: any };
-  yield put(getSongsSlice(songsData.data.data.songs));
+  try {
+    yield put(getSongsFetch());
+    const songs = yield getSongsAPI();
+    const songsData = songs as { data: any };
+    yield put(getSongsSlice(songsData.data.data.songs));
+  } catch (error: any) {
+    yield toast.error(error?.response?.data?.message);
+  }
 }
 
 export function* getSongByIdSaga(action: any): Generator<any> {
@@ -35,18 +40,33 @@ export function* getSongByIdSaga(action: any): Generator<any> {
 }
 
 export function* createSongSaga(action: any): Generator<any> {
-  yield createSongAPI(action.song);
-  yield put(addSongSlice(action.song));
+  try {
+    const response: any = yield call(createSongAPI, action.song);
+    yield put(addSongSlice(response?.data?.data?.song));
+    yield toast.success(response?.data?.message);
+  } catch (error: any) {
+    toast.error(error?.response?.data?.message);
+  }
 }
 
 export function* updateSongSaga(action: any): Generator<any> {
-  yield updateSongAPI(action.song.index, action.song);
-  yield put(editSongSlice(action.song));
+  try {
+    const response: any = yield updateSongAPI(action.song._id, action.song);
+    yield put(editSongSlice(action.song));
+    yield toast.success(response?.data?.message);
+  } catch (error: any) {
+    yield toast.error(error?.response?.data?.message);
+  }
 }
 
 export function* deleteSongSaga(action: any): Generator<any> {
-  yield deleteSongAPI(action.id);
-  yield put(deleteSongSlice(action.id));
+  try {
+    const response: any = yield deleteSongAPI(action.id);
+    yield put(deleteSongSlice(action.id));
+    yield toast.success(response?.data?.message);
+  } catch (error: any) {
+    yield toast.error(error?.response?.data?.message);
+  }
 }
 
 export function* watchSongsAsync(): Generator<any> {

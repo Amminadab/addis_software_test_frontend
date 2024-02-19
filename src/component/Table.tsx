@@ -101,7 +101,7 @@ const ManageTable: React.FC<FormProps> = ({ handleClickOpen }) => {
                       <Img
                         src={deleteIcon}
                         onClick={() => {
-                          dispatch({ type: DELETE_SONG_BY_ID, id: row.index });
+                          dispatch({ type: DELETE_SONG_BY_ID, id: row._id });
                         }}
                         alt="delete"
                       />
